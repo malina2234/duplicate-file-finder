@@ -1,0 +1,19 @@
+# Файлы IntelliJ IDEA
+.idea/
+*.iml
+
+# Файлы Gradle
+.gradle/
+build/
+
+# Логи
+*.log
+
+# Файл конфигурации
+app.properties
+
+# Системные файлы
+.DS_Store
+
+# Папка с тестовыми данными
+data/
