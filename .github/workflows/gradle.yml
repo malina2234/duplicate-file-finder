@@ -1,0 +1,56 @@
+# Название нашего CI/CD процесса, которое будет отображаться в GitHub
+name: Java CI Build and Test
+
+# Триггер: запускать процесс при отправке кода (push) в ветку master
+on:
+  push:
+    branches: [ "master" ] # Если ваша ветка называется main, исправьте на [ "main" ]
+  pull_request:
+    branches: [ "master" ] # Если ваша ветка называется main, исправьте на [ "main" ]
+
+# Список работ (jobs), которые нужно выполнить
+jobs:
+  # Название работы. Оно может быть любым, например, 'build'
+  build:
+    # === ЗАДАНИЕ 1: MATRIX ПО ОС ===
+    # Эта секция говорит GitHub запустить одну и ту же работу
+    # на нескольких операционных системах параллельно.
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    # Указываем, что виртуальная машина должна быть взята из нашей матрицы
+    runs-on: ${{ matrix.os }}
+
+    # Последовательность шагов, которые нужно выполнить на каждой ОС
+    steps:
+      # Шаг 1: Скачиваем исходный код из репозитория
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Шаг 2: Устанавливаем правильную версию Java JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Шаг 3: Даем права на выполнение для gradlew (критически важно для Linux)
+      # На Windows эта команда не повредит
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Шаг 4: Собираем проект и запускаем тесты командой 'build'
+      # Gradle автоматически выполнит компиляцию, тесты и сборку JAR-файла
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      # === ЗАДАНИЕ 2: ПУБЛИКАЦИЯ JAR ===
+      # Шаг 5: Загружаем результат сборки (наш JAR-файл) как артефакт
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # Название артефакта. Мы добавляем ОС, чтобы различать сборки.
+          name: duplicate-file-finder-${{ matrix.os }}
+          # Путь к файлу, который нужно загрузить. Gradle помещает его в build/libs/
+          path: build/libs/*.jar
