@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AppConfig {
-    // ... (весь остальной код класса AppConfig без изменений) ...
     private final Properties properties = new Properties();
 
     public AppConfig(String filePath) throws IOException {

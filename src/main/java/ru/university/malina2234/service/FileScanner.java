@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 
 
 public class FileScanner {
-    // ... (весь остальной код класса FileScanner без изменений) ...
     private final Set<String> ignoredDirs;
 
     public FileScanner(Set<String> ignoredDirs) {

@@ -13,20 +13,16 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Тесты для класса DuplicateFinder.
- */
+
 class DuplicateFinderTest {
 
-    // JUnit 5 автоматически создаст временную директорию для теста и удалит ее после.
+    //создаст временную директорию для теста и удалит ее после
     @TempDir
     Path tempDir;
 
     @Test
     @DisplayName("Должен найти одну группу дубликатов")
     void shouldFindOneGroupOfDuplicates() throws IOException {
-        // Arrange (Подготовка)
-        // Создаем файлы: два одинаковых и один уникальный
         Path file1 = Files.createFile(tempDir.resolve("file1.txt"));
         Files.write(file1, "same content".getBytes());
 
@@ -39,10 +35,10 @@ class DuplicateFinderTest {
         List<Path> files = Arrays.asList(file1, file2, file3);
         DuplicateFinder finder = new DuplicateFinder("MD5");
 
-        // Act (Действие)
+        // Действие
         Map<String, List<Path>> duplicates = finder.findDuplicates(files);
 
-        // Assert (Проверка)
+        // Проверка
         assertNotNull(duplicates, "Карта дубликатов не должна быть null");
         assertEquals(1, duplicates.size(), "Должна быть найдена одна группа дубликатов");
 

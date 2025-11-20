@@ -1,7 +1,5 @@
-// Эта строка ОБЯЗАНА соответствовать пути к файлу
 package ru.university.malina2234.service;
 
-// ... (все импорты класса) ...
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -15,7 +13,6 @@ import java.util.stream.Collectors;
 
 
 public class DuplicateFinder {
-    // ... (весь остальной код класса DuplicateFinder без изменений) ...
     private final String hashAlgorithm;
 
     public DuplicateFinder(String hashAlgorithm) {
