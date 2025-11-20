@@ -5,32 +5,24 @@ plugins {
     application
 }
 
-group = "ru.university.malina2234" // Убедитесь, что здесь ваша группа
+group = "ru.university.malina2234"
 version = "1.0.0"
 
 repositories {
     mavenCentral()
 }
-
-// =======================================================
-// ЭТОТ БЛОК КРИТИЧЕСКИ ВАЖЕН ДЛЯ ТЕСТОВ
-// =======================================================
 dependencies {
-    // Эта строка подключает JUnit 5 (аннотации @Test, Assertions и т.д.)
-    // 'testImplementation' означает, что эта библиотека нужна ТОЛЬКО для тестов.
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
-// =======================================================
-// ЭТОТ БЛОК ГОВОРИТ GRADLE, КАК ЗАПУСКАТЬ ТЕСТЫ
-// =======================================================
+// запуск тестов
 tasks.test {
     useJUnitPlatform() // Указываем, что нужно использовать платформу JUnit 5
 }
 
 application {
-    mainClass.set("ru.university.malina2234.app.Main") // Убедитесь, что здесь ваш main класс
+    mainClass.set("ru.university.malina2234.app.Main")
 }
 
 tasks.withType<Jar> {
