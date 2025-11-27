@@ -8,16 +8,28 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * класс отвечающий за рекурсивное сканирование директории и сбор всех файлов
+ */
 public class FileScanner {
     private final Set<String> ignoredDirs;
 
-    //принимает список игнорируемых папок
+    /**
+     * конструктор для создания сканера файлов
+     * @param ignoredDirs набор строк с названиями папок, которые нужно проигнорировать
+     */
     public FileScanner(Set<String> ignoredDirs) {
         this.ignoredDirs = ignoredDirs;
     }
 
-    // сканирует папку и возвращает список файлов
+    /**
+     * сканирует указанную директорию и возвращает список всех найденных файлов
+     * @param startDir путь к начальной директории для сканирования
+     * @return список путей к найденным файлам
+     * @throws IOException если возникает ошибка при доступе к файловой системе
+     */
     public List<Path> scan(Path startDir) throws IOException {
+        // проверяем, что нам передали именно папку, а не файл
         if (!Files.isDirectory(startDir)) {
             throw new IllegalArgumentException("Указанный путь не является директорией: " + startDir);
         }
@@ -36,13 +48,19 @@ public class FileScanner {
         return fileList;
     }
 
-    //для проверки, находится ли файл в игнорируемой папке
+    /**
+     * вспомогательный метод для проверки, находится ли файл в одной из игнорируемых папок
+     * @param path путь к файлу, который нужно проверить
+     * @param startDir корневая директория сканирования, для вычисления относительного пути
+     * @return true, если файл находится в игнорируемой папке, иначе фолс
+     */
     private boolean isInIgnoredDir(Path path, Path startDir) {
+        // получаем относительный путь к файлу
         Path relativePath = startDir.relativize(path.getParent());
         // проверяем каждую часть пути
         for (Path part : relativePath) {
             if (ignoredDirs.contains(part.toString())) {
-                return true; // если нашли совпадение, возвращаем true
+                return true; // если нашли совпаден`ие, возвращаем true
             }
         }
         return false;

@@ -10,10 +10,15 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
+
+    /**
+     * вход в программу
+     * @param args аргументы командной строки (не используются)
+     */
     public static void main(String[] args) {
         System.out.println("Zapusk poiska dublikatov");
 
-        // блок для  выполнения кода и нхождение ошибок
+        // блок для выполнения кода и нахождения ошибок
         try {
             // создаем объект для чтения файла конфигурации
             AppConfig config = new AppConfig("app.properties");
@@ -39,6 +44,10 @@ public class Main {
         }
     }
 
+    /**
+     * печатает отчет о найденных дубликатах в консоль
+     * @param duplicates карта с группами файлов-дубликатов
+     */
     private static void printReport(Map<String, List<Path>> duplicates) {
         // если список дубликатов пустой
         if (duplicates.isEmpty()) {

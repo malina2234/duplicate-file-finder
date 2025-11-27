@@ -9,29 +9,45 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * класс для чтения и предоставления настроек из файла app properties
+ */
 public class AppConfig {
     private final Properties properties = new Properties();
 
-    //  загружает настройки из файла при создании объекта
+    /**
+     * загружает настройки из файла при создании объекта
+     * @param filePath путь к файлу конфигурации, app properties
+     * @throws IOException если файл не найден или не может быть прочитан
+     */
     public AppConfig(String filePath) throws IOException {
         try (FileReader reader = new FileReader(filePath)) {
             properties.load(reader);
         }
     }
 
-    //для получения папки для сканирования
+    /**
+     * возвращает путь к директории для сканирования
+     * @return путь к директории
+     */
     public Path getScanDirectory() {
         String dir = properties.getProperty("scan.directory");
         return Paths.get(dir);
     }
 
-    // для получения алгоритма хеширования
+    /**
+     * возвращает название алгоритма хеширования
+     * @return название алгоритма, md5
+     */
     public String getHashAlgorithm() {
         // если в файле нет алгоритма, по умолчанию будет md5
         return properties.getProperty("hash.algorithm", "MD5");
     }
 
-    // для получения списка игнорируемых папок
+    /**
+     * возвращает набор названий директорий, которые нужно игнорировать
+     * @return набор строк с названиями папок
+     */
     public Set<String> getIgnoredDirs() {
         String dirs = properties.getProperty("scan.ignore.dirs", "");
         // разбиваем строку с папками по запятой и убираем лишние пробелы

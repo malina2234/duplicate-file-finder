@@ -11,15 +11,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * класс отвечающий за поиск файлов дубликатов
+ */
 public class DuplicateFinder {
     private final String hashAlgorithm;
 
-    //  принимает название алгоритма хеширования
+    /**
+     * конструктор для создания поисковика дубликатов
+     * @param hashAlgorithm название алгоритма хеширования,md5
+     */
     public DuplicateFinder(String hashAlgorithm) {
         this.hashAlgorithm = hashAlgorithm;
     }
 
-    // ищет дубликаты в списке файлов
+    /**
+     * ищет дубликаты в предоставленном списке файлов
+     * сначала группирует по размеру для оптимизации, затем по хешу
+     * @param files список путей к файлам для проверки
+     * @return карта, где ключ - это хеш, а значение - список файлов-дубликатов
+     */
     public Map<String, List<Path>> findDuplicates(List<Path> files) {
         // сначала группируем файлы по размеру для оптимизации
         Map<Long, List<Path>> bySize = files.stream()
@@ -36,18 +47,25 @@ public class DuplicateFinder {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    //  для получения размера файла
+    /**
+     * вспомогательный метод для получения размера файла
+     * @param path путь к файлу
+     * @return размер файла в байтах или -1 в случае ошибки
+     */
     private long getFileSize(Path path) {
         try {
             return Files.size(path);
         } catch (IOException e) {
-            // если не удалось получить размер, выводим ошибку
             System.err.println("Не удалось получить размер файла: " + path);
             return -1L;
         }
     }
 
-    // для вычисления хеш-суммы файла
+    /**
+     * вычисляет хеш сумму для указанного файла
+     * @param path путь к файлу, для которого нужно посчитать хеш
+     * @return строковое представление хеша или пустая строка в случае ошибки
+     */
     private String calculateHash(Path path) {
         try {
             MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
@@ -65,7 +83,11 @@ public class DuplicateFinder {
         }
     }
 
-    //для преобразования байтов хеша в красивую строку (hex)
+    /**
+     * преобразует массив байтов (хеш) в шестнадцатеричную строку
+     * @param hash массив байтов для преобразования
+     * @return строковое представление хеша
+     */
     private String bytesToHex(byte[] hash) {
         StringBuilder hexString = new StringBuilder(2 * hash.length);
         for (byte b : hash) {
